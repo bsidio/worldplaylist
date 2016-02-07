@@ -4,7 +4,7 @@ import flask
 import sqlite3
 import requests
 import datetime
-from serverutils import conf_reader, crossdomain, good_duration, duration_seconds
+from serverutils import conf_reader, crossdomain, good_duration, duration_seconds, good_category
 
 SQLITE, GOOGLE = conf_reader() # load configuration
 
@@ -42,7 +42,8 @@ def music_info_get(music_id):
     duration_s = duration_seconds(duration)
     # TODO: check category & sensitive content
     good_d = good_duration(duration)
-    if good_d: # if song duration is okay
+    good_c = good_category(category_id)
+    if good_d and good_c: # if song is okay
         date = datetime.datetime.now()
         link = 'https://www.youtube.com/watch?v=' + video_id
         # push into the db
@@ -51,7 +52,7 @@ def music_info_get(music_id):
             VALUES (?,?,?,?,?,?,?)""", (date, link, category_id, duration, duration_s, video_id, title))
         return flask.jsonify({'status': 'ok', 'message': 'Thanks for your contribution :)'}), 200
     else:
-        return flask.jsonify({'status': 'error', 'message': 'Sorry, song duration is too long ..'}), 200
+        return flask.jsonify({'status': 'error', 'message': 'Sorry, video is not valid ..'}), 200
 
 @app.route('/api/musics', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -103,7 +104,7 @@ def show_musics_get():
     data2 = cur.fetchone()
     res2 = 0
     if data2:
-        res2 = data2[0] - 1    
+        res2 = data2[0] - 1
     return flask.jsonify({'status': 'ok', 'data': res, 'data2': res2}), 200
 
 '''

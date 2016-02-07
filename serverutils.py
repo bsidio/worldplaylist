@@ -36,6 +36,13 @@ def create_tables(cur, SQLITE):
 '''
 Youtube
 '''
+def good_category(category_id):
+    catego = int(category_id)
+    if catego == 10 or catego == 24:
+        return True
+    else:
+        return False    
+
 def good_duration(duration):
     d = duration.replace('PT', '')
     if d.find('H') != -1:
