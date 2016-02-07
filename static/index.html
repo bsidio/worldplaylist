@@ -1,0 +1,39 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>World Playlist</title>
+  <link rel="shortcut icon" href="music.png">
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="sweetalert.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <div id="banner">
+    <div id="banner-logo">
+      <img id="logo" src="music.png" />
+    </div>
+    <div id="banner-link">
+        <div id="mute-box">
+          <input type="checkbox" id="muteit" value="off" name="mutebutton" onClick="muteMode()">
+          <label for="mutebutton">Mute</label>
+        </div>
+        <div id="songs-list" onClick="showPlaylist()">Playlist</div>
+        <input type="text" id='music-link-add' placeholder="https://www.youtube.com/watch?v=QH2-TGUlwu4" onkeyup = "if (event.keyCode == 13) $('#submitMusic').click()" autofocus>
+        <input type="submit" id="submitMusic" value="Add" onClick="submitMusic()">
+    </div>
+  </div>
+
+  <div id="playlist">
+    <div id="playlist-box"></div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <div id="footer">
+    <a> World Playlist © 2016</a>
+  </div>
+</body>
+</html>
