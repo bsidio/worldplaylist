@@ -84,10 +84,10 @@ def seek_to_seconds_get():
 @app.route('/api/showmusics', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def show_musics_get():
-    rep = cur.execute("SELECT * FROM " + SQLITE['musictable'] + " ORDER BY Datetime LIMIT 10")
+    rep = cur.execute("SELECT * FROM " + SQLITE['musictable'] + " ORDER BY Datetime LIMIT 11")
     musics = rep.fetchall()
     res = list()
-    for music in musics:
+    for music in musics[1:]:
         d = {
             'id': music[0],
             'datetime': music[1],

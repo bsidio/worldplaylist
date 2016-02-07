@@ -54,6 +54,8 @@ def good_duration(duration):
 def duration_seconds(duration):
     d = duration.replace('PT', '')
     minutes = 0.0
+    if d.find('H') != -1:
+      return 0
     if d.find('M') != -1:
         minutes = float(d[0:d.index('M')])
         d = d.replace(d[0:d.index('M')+1], '')

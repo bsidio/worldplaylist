@@ -18,8 +18,14 @@ function submitMusic() {
     var linkId = link.replace(youtubeLink, "").trim()
     getMusicInfos(linkId, function(data) {
       message = data.message
+      status = data.status
       $("#music-link-add").val("");
-      swal("Thanks!", message, "success");
+      if (status === "ok") {
+        swal("Thanks!", message, "success");
+      } else {
+        swal("Oops...", message, "error");
+      }
+
     });
   } else {
     $("#music-link-add").val("");
@@ -66,7 +72,7 @@ function showPlaylist() {
        }
        html += "</ul>"
        swal({
-         title: "The playlist",
+         title: "Next songs",
          text: html,
          imageUrl: "music.png",
          html: true
