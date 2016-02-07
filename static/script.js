@@ -66,13 +66,14 @@ function showPlaylist() {
     type: "GET",
     success: function(data){
        var d = data.data
+       var nb = data.data2
        var html = "<ul>"
        for(var i=0; i<d.length; i++) {
          html += "<li>" + d[i].title + "</li>"
        }
        html += "</ul>"
        swal({
-         title: "Next songs",
+         title: "Next songs (" + nb + " pending)",
          text: html,
          imageUrl: "music.png",
          html: true

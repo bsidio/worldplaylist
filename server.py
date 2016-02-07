@@ -99,7 +99,12 @@ def show_musics_get():
             'title': music[7]
         }
         res.append(d)
-    return flask.jsonify({'status': 'ok', 'data': res}), 200
+    cur.execute("SELECT Count(*) FROM " + SQLITE['musictable'])
+    data2 = cur.fetchone()
+    res2 = 0
+    if data2:
+        res2 = data2[0] - 1    
+    return flask.jsonify({'status': 'ok', 'data': res, 'data2': res2}), 200
 
 '''
  -- Main
