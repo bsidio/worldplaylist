@@ -1,0 +1,11 @@
+{
+  "sqlite": {
+    "db": "test.db",
+    "seektable": "Seek",
+    "musictable": "Musics"
+  },
+  "google": {
+    "endpoint": "https://www.googleapis.com/youtube/v3/videos",
+    "apikey": "AIzaSyB2JIiMId6DSNiL4_Xgx9D2-acQHzifw-Y"
+  }
+}
