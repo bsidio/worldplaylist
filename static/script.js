@@ -56,9 +56,9 @@ function getMusicInfos(id, callback) {
 }
 
 /*
-*
+* -------------------------------------------
 * Playlist show
-*
+* -------------------------------------------
 */
 function showPlaylist() {
   $.ajax({
@@ -83,9 +83,9 @@ function showPlaylist() {
 }
 
 /*
-*
+* -------------------------------------------
 * Mute / Unmute
-*
+* -------------------------------------------
 */
 function muteMode() {
   var mute = $("#muteit").prop("checked");
@@ -187,13 +187,13 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    if(event.data === 0) {
-      setTimeout(function(){
-          nextSong(player)
-        }, 1000);
-    }
- }
+  if(event.data === 0) {
+    setTimeout(function() {
+      nextSong(player)
+    }, 1000);
+  }
+}
 
- function onPlayerError(e) {
-   console.log(e)
- }
+function onPlayerError(e) {
+  console.log(e)
+}

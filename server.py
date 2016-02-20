@@ -4,7 +4,7 @@ import flask
 import sqlite3
 import requests
 import datetime
-from serverutils import conf_reader, crossdomain, good_duration, duration_seconds, good_category
+from serverutils import conf_reader, crossdomain, good_duration, duration_seconds, good_category, logger
 
 SQLITE, GOOGLE = conf_reader() # load configuration
 
@@ -26,11 +26,13 @@ cur = conn.cursor()
 @app.route('/')
 @crossdomain(origin='*')
 def dashboard():
+    logger('Enter the website')
     return app.send_static_file('index.html')
 
 @app.route('/api/musicinfo/<music_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def music_info_get(music_id):
+    logger('Check the music')
     url = GOOGLE['endpoint'] + '?part=id,contentDetails,snippet&id=' + music_id + '&key=' + GOOGLE['apikey']
     response = requests.get(url)
     data = response.json()
@@ -57,6 +59,7 @@ def music_info_get(music_id):
 @app.route('/api/musics', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def musics_get():
+    logger('Fetch last music')
     rep = cur.execute("SELECT * FROM " + SQLITE['musictable'] + " ORDER BY Datetime LIMIT 1")
     music = rep.fetchone()
     d = {
@@ -75,6 +78,7 @@ def musics_get():
 @app.route('/api/seektoseconds', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def seek_to_seconds_get():
+    logger('Fetch seek to seconds')
     cur.execute("SELECT Id, Seconds FROM " + SQLITE['seektable'] + " WHERE Id=1")
     data = cur.fetchone()
     res = 0
@@ -85,6 +89,7 @@ def seek_to_seconds_get():
 @app.route('/api/showmusics', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def show_musics_get():
+    logger('Fetch musics playlist and total number')
     rep = cur.execute("SELECT * FROM " + SQLITE['musictable'] + " ORDER BY Datetime LIMIT 11")
     musics = rep.fetchall()
     res = list()

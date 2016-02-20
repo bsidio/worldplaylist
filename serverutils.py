@@ -17,6 +17,34 @@ def conf_reader():
     return sqlite, google
 
 '''
+Debug
+'''
+class bcolors:
+    BLUE = '\033[94m'
+    SUCCESS = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+def logger(msg, msg_type=None):
+    # msg_type: success, warning, fail, blue
+    if msg_type:
+        msgt = msg_type.strip().lower()
+    else:
+        msgt = None
+    if msgt == 'success':
+        print bcolors.BOLD + bcolors.SUCCESS + msg + bcolors.ENDC
+    elif msgt == 'warning':
+        print bcolors.BOLD + bcolors.WARNING + msg + bcolors.ENDC
+    elif msgt == 'fail':
+        print bcolors.BOLD + bcolors.FAIL + msg + bcolors.ENDC
+    elif msgt == 'blue':
+        print bcolors.BOLD + bcolors.BLUE + msg + bcolors.ENDC
+    else:
+        print bcolors.BOLD + msg + bcolors.ENDC
+
+'''
 Sqlite
 '''
 def create_tables(cur, SQLITE):
@@ -38,10 +66,10 @@ Youtube
 '''
 def good_category(category_id):
     catego = int(category_id)
-    if catego == 10 or catego == 24:
+    if catego == 10:
         return True
     else:
-        return False    
+        return False
 
 def good_duration(duration):
     d = duration.replace('PT', '')

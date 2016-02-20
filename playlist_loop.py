@@ -2,7 +2,7 @@
 
 import time
 import sqlite3
-from serverutils import conf_reader, create_tables
+from serverutils import conf_reader, create_tables, logger
 
 SQLITE, GOOGLE = conf_reader() # load configuration
 
@@ -18,11 +18,10 @@ create_tables(cur, SQLITE)
 '''
 def loop():
     rep = cur.execute("SELECT VideoId, DurationSeconds FROM " + SQLITE['musictable'] + " ORDER BY Datetime LIMIT 1 ")
-    if not rep.fetchone():
-        pass
-    else:
-        video_id, duration_seconds = rep.fetchone()
-        print video_id, duration_seconds
+    data = rep.fetchone()
+    if data:
+        video_id, duration_seconds = data[0], data[1]
+        logger(video_id + ' ' + str(duration_seconds))
         # seconds time loop procedure
         t0 = time.time()
         t1 = int(time.time() - t0)
@@ -31,10 +30,10 @@ def loop():
             t1 = int(time.time() - t0)
             if t1 != t_tmp: # update every seconds
                 cur.execute("UPDATE " + SQLITE['seektable'] + " SET Seconds = ? WHERE Id = ?", (t1, 1))
-                print t1
+                #print t1
                 t_tmp = t1
             if t1 >= duration_seconds:
-                print 'Delete song'
+                logger('Delete song')
                 cur.execute("DELETE FROM " + SQLITE['musictable'] + " WHERE VideoId = ? ", (video_id,))
                 break
 
