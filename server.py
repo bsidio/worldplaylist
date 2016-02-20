@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 import flask
 import sqlite3
 import requests
@@ -21,6 +22,11 @@ conn = sqlite3.connect(SQLITE['db'], isolation_level=None, detect_types=sqlite3.
 cur = conn.cursor()
 
 '''
+ -- Regex
+'''
+youtube_id_regex = re.compile("[a-zA-Z0-9_-]{11}")
+
+'''
  -- Routes
 '''
 @app.route('/')
@@ -32,6 +38,14 @@ def dashboard():
 @app.route('/api/musicinfo/<music_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def music_info_get(music_id):
+    if not flask.request.is_xhr: # check ajax request
+        return app.send_static_file('index.html')
+        #return flask.jsonify({'status': 'error', 'message': 'Error'}), 400
+    check_youtube_id = youtube_id_regex.findall(str(music_id))
+    if len(check_youtube_id) > 0:
+        if check_youtube_id[0] != str(music_id):
+            return app.send_static_file('index.html')
+            #return flask.jsonify({'status': 'error', 'message': 'Error'}), 400
     logger('Check the music')
     url = GOOGLE['endpoint'] + '?part=id,contentDetails,snippet&id=' + music_id + '&key=' + GOOGLE['apikey']
     response = requests.get(url)
